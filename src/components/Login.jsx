@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -10,7 +11,6 @@ function Login() {
 
   function handleLogin(e) {
     e.preventDefault();
-
     setError("");
 
     // Validation
@@ -21,7 +21,7 @@ function Login() {
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailPattern.test(email)) {
+    if (!emailPattern.test(email.trim())) {
       setError("Please enter a valid email address!");
       return;
     }
@@ -41,10 +41,13 @@ function Login() {
       return;
     }
 
-    // Generate demo token
+    // Generate demo authentication token
     const demoToken = "demo-token-" + Date.now();
 
+    // Save token
     localStorage.setItem("authToken", demoToken);
+
+    // Save logged-in user
     localStorage.setItem("loggedInUser", registeredUser.name);
 
     // Navigate to dashboard
@@ -54,7 +57,6 @@ function Login() {
   return (
     <div className="auth-container">
       <div className="auth-card">
-
         <div className="auth-heading">
           <h1>Welcome Back!</h1>
           <p>Login to access your dashboard</p>
@@ -63,7 +65,6 @@ function Login() {
         {error && <div className="message error">{error}</div>}
 
         <form onSubmit={handleLogin}>
-
           <div className="form-group">
             <label>Email Address</label>
             <input
@@ -87,13 +88,11 @@ function Login() {
           <button type="submit" className="auth-button">
             Login
           </button>
-
         </form>
 
         <p className="auth-footer">
           Don't have an account? <Link to="/signup">Sign Up</Link>
         </p>
-
       </div>
     </div>
   );
